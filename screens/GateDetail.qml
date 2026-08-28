@@ -202,6 +202,7 @@ Item {
                         statusLabel: motorData.statusLabel
                         lastUpdated: motorData.lastUpdated
                         updatedBy: motorData.updatedBy
+                        motionPhase: index
                         x: motorData.px * radialArea.width - width / 2
                         y: motorData.py * radialArea.height - height / 2
                         onClicked: function(selectedMotor) { root.motorRequested(selectedMotor) }
