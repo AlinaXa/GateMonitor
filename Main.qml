@@ -32,7 +32,7 @@ ApplicationWindow {
     StackView {
         id: stackView
         anchors.fill: parent
-        initialItem: gateDetailComponent
+        initialItem: App.AppState.authenticated ? gateDetailComponent : loginComponent
         pushEnter: Transition { NumberAnimation { property: "x"; from: stackView.width; to: 0; duration: 180; easing.type: Easing.OutCubic } }
         pushExit: Transition { NumberAnimation { property: "x"; from: 0; to: -stackView.width * 0.22; duration: 180 } }
         popEnter: Transition { NumberAnimation { property: "x"; from: -stackView.width * 0.22; to: 0; duration: 180 } }
@@ -140,6 +140,11 @@ ApplicationWindow {
             onOpenGate: window.openRoot(gateDetailComponent)
             onOpenProfile: stackView.push(profileComponent)
             onOpenHistory: stackView.push(historyComponent)
+            onOpenStatistics: stackView.push(statisticsComponent)
+            onSignOutRequested: {
+                App.AppState.signOut()
+                window.openRoot(loginComponent)
+            }
             onNavigationRequested: function(destination) { window.handleNavigation(destination) }
         }
     }
@@ -155,6 +160,16 @@ ApplicationWindow {
             onBackRequested: stackView.pop()
             onLogSelected: function(index) { stackView.push(logDetailComponent, { logIndex: index }) }
         }
+    }
+
+    Component {
+        id: statisticsComponent
+        Statistics { onBackRequested: stackView.pop() }
+    }
+
+    Component {
+        id: loginComponent
+        Login { onSignedIn: window.openRoot(locationsComponent) }
     }
 
     Component {

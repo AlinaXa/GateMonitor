@@ -11,6 +11,7 @@ Item {
     property string accessDirection: "blocked"
     property bool validatorActive: false
     property string systemState: "normal"
+    property bool quickVisible: false
 
     signal clicked()
 
@@ -30,6 +31,19 @@ Item {
     Behavior on scale { NumberAnimation { duration: 110; easing.type: Easing.OutCubic } }
 
     Rectangle {
+        anchors.centerIn: ring
+        width: ring.width + 8; height: width; radius: width / 2
+        color: "transparent"; border.width: 2; border.color: root.healthColor
+        visible: root.systemState !== "offline"
+        SequentialAnimation on opacity {
+            running: root.visible && (root.systemState === "normal" || root.systemState === "error" || root.systemState === "warning")
+            loops: Animation.Infinite
+            NumberAnimation { from: 0.50; to: 0.05; duration: root.systemState === "error" ? 520 : 1250 }
+            NumberAnimation { from: 0.05; to: 0.50; duration: root.systemState === "error" ? 520 : 1250 }
+        }
+    }
+
+    Rectangle {
         id: ring
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
@@ -41,6 +55,16 @@ Item {
         border.color: root.healthColor
 
         Behavior on border.width { NumberAnimation { duration: 100 } }
+
+        SequentialAnimation on rotation {
+            running: root.visible && root.systemState === "error"
+            loops: Animation.Infinite
+            PauseAnimation { duration: 1900 }
+            NumberAnimation { to: -2.5; duration: 55 }
+            NumberAnimation { to: 2.5; duration: 75 }
+            NumberAnimation { to: -1.5; duration: 65 }
+            NumberAnimation { to: 0; duration: 55 }
+        }
 
         Item {
             anchors.centerIn: parent
@@ -88,6 +112,18 @@ Item {
         }
     }
 
+    Rectangle {
+        visible: root.quickVisible
+        z: 20; width: 108; height: 48; radius: 10
+        anchors.horizontalCenter: parent.horizontalCenter; anchors.bottom: ring.top; anchors.bottomMargin: 4
+        color: "#16293A"; border.color: root.healthColor
+        Column { anchors.centerIn: parent; spacing: 2
+            Text { anchors.horizontalCenter: parent.horizontalCenter; text: "Detalii rapide"; color: App.Theme.primaryText; font.pixelSize: 10; font.weight: Font.DemiBold }
+            Text { anchors.horizontalCenter: parent.horizontalCenter; text: root.gateId + " · " + root.stateText; color: root.healthColor; font.pixelSize: 9 }
+        }
+    }
+    Timer { id: quickTimer; interval: 1800; onTriggered: root.quickVisible = false }
+
     Column {
         anchors.top: ring.bottom
         anchors.topMargin: 8
@@ -110,5 +146,6 @@ Item {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onClicked: root.clicked()
+        onPressAndHold: { root.quickVisible = true; quickTimer.restart() }
     }
 }

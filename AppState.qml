@@ -3,6 +3,7 @@ pragma Singleton
 import QtQuick
 
 QtObject {
+    property bool authenticated: true
     property string role: "Admin"
     property string profileName: "Admin 6"
     property string profileEmail: "admin6@gatemonitor.ro"
@@ -10,6 +11,15 @@ QtObject {
     property string profilePosition: "Operator monitorizare"
     readonly property bool canEdit: role === "Admin"
     property var motorStates: ({ "M1": "GREEN", "M2": "YELLOW", "M3": "RED", "M4": "GREEN", "M5": "BLUE", "M6": "GREEN" })
+
+    function signIn(email, password) {
+        if (!email.length || !password.length) return false
+        authenticated = true
+        profileEmail = email
+        return true
+    }
+
+    function signOut() { authenticated = false }
 
     property ListModel auditLog: ListModel {
         ListElement { eventId: "EVT-1048"; time: "28 Aug · 01:41"; title: "Verificare automată finalizată"; source: "Motor M1 · P014"; userName: "Sistem"; severity: "GREEN"; previousValue: "Verificare în curs"; newValue: "OK"; technical: "Temperatură 42°C · Vibrații 1.8 mm/s · Curent 4.2 A"; note: "Toți parametrii sunt în limite." }

@@ -42,6 +42,8 @@ qt_add_qml_module(GateMonitorApp
         screens/Profile.qml
         screens/History.qml
         screens/LogDetail.qml
+        screens/Statistics.qml
+        screens/Login.qml
     RESOURCES
         qtquickcontrols2.conf
 )
@@ -53,8 +55,8 @@ set_target_properties(GateMonitorApp PROPERTIES
     WIN32_EXECUTABLE TRUE
     QT_ANDROID_PACKAGE_NAME "ro.gatemonitor.app"
     QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android"
-    QT_ANDROID_VERSION_NAME "1.4.0"
-    QT_ANDROID_VERSION_CODE 12
+    QT_ANDROID_VERSION_NAME "1.5.0"
+    QT_ANDROID_VERSION_CODE 13
 )
 
 include(GNUInstallDirs)
