@@ -1,0 +1,13 @@
+import QmlProject
+
+Project {
+    mainFile: "Main.qml"
+
+    QmlFiles {
+        directory: "."
+    }
+
+    Environment {
+        QT_QUICK_CONTROLS_CONF: "qtquickcontrols2.conf"
+    }
+}

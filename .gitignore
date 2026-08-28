@@ -1,0 +1,25 @@
+# Qt / CMake build artifacts
+build/
+build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.user
+*.qtcsettings
+
+# Android / Gradle
+.gradle/
+.android/
+android-build/
+*.apk
+*.aab
+*.idsig
+*.keystore
+*.jks
+
+# Local working files
+work/
+outputs/
+.DS_Store
+Thumbs.db
