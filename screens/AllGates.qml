@@ -1,5 +1,8 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import ".." as App
+import "../components"
 
 Item {
     id: root
@@ -24,7 +27,14 @@ Item {
         { location: "Depou Militari", idv: "P024", name: "Ieșire Vehicule", state: "GREEN", label: "OK" }
     ]
 
-    Rectangle { anchors.fill: parent; color: App.Theme.background }
+    Rectangle {
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#071424" }
+            GradientStop { position: 0.5; color: "#091827" }
+            GradientStop { position: 1.0; color: "#06111D" }
+        }
+    }
 
     Column {
         anchors.fill: parent
@@ -55,9 +65,9 @@ Item {
             width: parent.width
             height: parent.height - 98
             clip: true
-            cellWidth: width / 2
-            cellHeight: 184
-            topMargin: 8
+            cellWidth: width / 3
+            cellHeight: 180
+            topMargin: 14
             bottomMargin: 18
             model: root.allGates
 
@@ -68,93 +78,20 @@ Item {
                 width: GridView.view.cellWidth
                 height: GridView.view.cellHeight
 
-                property real floatOffset: 0
-
-                SequentialAnimation on floatOffset {
-                    running: true
-                    loops: Animation.Infinite
-                    PauseAnimation { duration: gateCell.index * 45 }
-                    NumberAnimation { to: -7; duration: 1350 + (gateCell.index % 4) * 120; easing.type: Easing.InOutSine }
-                    NumberAnimation { to: 7; duration: 1350 + (gateCell.index % 4) * 120; easing.type: Easing.InOutSine }
-                }
-
-                Item {
-                    id: floatingGate
+                GateBubble {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    y: 5 + gateCell.floatOffset
-                    width: 142
-                    height: 170
-                    scale: mouse.pressed ? 0.94 : (mouse.containsMouse ? 1.04 : 1)
-
-                    Behavior on scale { NumberAnimation { duration: 130; easing.type: Easing.OutCubic } }
-
-                    Rectangle {
-                        id: bubble
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        width: 118
-                        height: 118
-                        radius: 59
-                        color: App.Theme.statusBackground(gateCell.modelData.state, mouse.containsMouse)
-                        border.width: mouse.containsMouse ? 3 : 2
-                        border.color: App.Theme.statusColor(gateCell.modelData.state)
-
-                        Rectangle {
-                            anchors.centerIn: parent
-                            width: 74
-                            height: 48
-                            radius: 12
-                            color: "transparent"
-                            border.width: 2
-                            border.color: App.Theme.statusColor(gateCell.modelData.state)
-
-                            // Poartă de metrou văzută de sus: două canaturi și culoar central.
-                            Rectangle { x: 12; y: 5; width: 5; height: 38; radius: 2; color: App.Theme.primaryText }
-                            Rectangle { anchors.right: parent.right; anchors.rightMargin: 12; y: 5; width: 5; height: 38; radius: 2; color: App.Theme.primaryText }
-                            Rectangle { anchors.centerIn: parent; width: 24; height: 2; color: App.Theme.statusColor(gateCell.modelData.state) }
-                            Rectangle { x: 5; anchors.verticalCenter: parent.verticalCenter; width: 10; height: 2; color: App.Theme.statusColor(gateCell.modelData.state) }
-                            Rectangle { anchors.right: parent.right; anchors.rightMargin: 5; anchors.verticalCenter: parent.verticalCenter; width: 10; height: 2; color: App.Theme.statusColor(gateCell.modelData.state) }
-                        }
-
-                        Rectangle {
-                            anchors.right: parent.right
-                            anchors.rightMargin: 7
-                            anchors.top: parent.top
-                            anchors.topMargin: 8
-                            width: 17
-                            height: 17
-                            radius: 9
-                            color: App.Theme.statusColor(gateCell.modelData.state)
-                            border.width: 3
-                            border.color: App.Theme.background
-                        }
-
-                        Text {
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.bottom: parent.bottom
-                            anchors.bottomMargin: 10
-                            text: gateCell.modelData.idv
-                            color: App.Theme.primaryText
-                            font.pixelSize: 13
-                            font.weight: Font.Bold
-                        }
-                    }
-
-                    Column {
-                        anchors.top: bubble.bottom
-                        anchors.topMargin: 7
-                        width: parent.width
-                        spacing: 2
-                        Text { width: parent.width; text: gateCell.modelData.name; color: App.Theme.primaryText; font.pixelSize: 11; font.weight: Font.DemiBold; horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight }
-                        Text { width: parent.width; text: gateCell.modelData.location; color: App.Theme.statusColor(gateCell.modelData.state); font.pixelSize: 10; horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight }
-                    }
-
-                    MouseArea {
-                        id: mouse
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: root.gateSelected(gateCell.modelData.location, gateCell.modelData.idv, gateCell.modelData.name)
-                    }
+                    gateId: gateCell.modelData.idv
+                    location: gateCell.modelData.location
+                    stateText: gateCell.modelData.state === "GREEN" || gateCell.modelData.state === "BLUE" ? "OPEN"
+                               : gateCell.modelData.state === "YELLOW" ? "WARNING" : "CLOSED"
+                    gateOpen: gateCell.modelData.state === "GREEN" || gateCell.modelData.state === "BLUE"
+                    accessDirection: gateCell.modelData.state === "RED" || gateCell.modelData.state === "YELLOW" ? "blocked"
+                                     : (gateCell.index % 2 === 0 ? "bottomToTop" : "topToBottom")
+                    validatorActive: gateCell.modelData.state !== "YELLOW"
+                    systemState: gateCell.modelData.state === "GREEN" ? "open"
+                                 : gateCell.modelData.state === "RED" ? "closed"
+                                 : gateCell.modelData.state === "YELLOW" ? "warning" : "normal"
+                    onClicked: root.gateSelected(gateCell.modelData.location, gateCell.modelData.idv, gateCell.modelData.name)
                 }
             }
         }

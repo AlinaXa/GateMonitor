@@ -18,7 +18,9 @@ Item {
     implicitHeight: 166
     scale: touch.pressed ? 1.03 : 1.0
 
-    readonly property color healthColor: systemState === "warning" ? App.Theme.yellow
+    readonly property color healthColor: systemState === "open" ? App.Theme.green
+                                                : systemState === "closed" ? App.Theme.red
+                                                : systemState === "warning" ? App.Theme.yellow
                                                 : systemState === "error" ? App.Theme.red
                                                 : systemState === "offline" ? "#657586"
                                                 : App.Theme.blue
@@ -34,7 +36,7 @@ Item {
         width: 104
         height: 104
         radius: 52
-        color: Qt.rgba(root.healthColor.r, root.healthColor.g, root.healthColor.b, touch.pressed ? 0.16 : 0.08)
+        color: "transparent"
         border.width: touch.pressed ? 2.5 : 1.5
         border.color: root.healthColor
 
