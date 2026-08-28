@@ -13,8 +13,8 @@ ApplicationWindow {
     title: qsTr("Gate Monitor")
     color: App.Theme.background
 
-    property string selectedLocation: "Depou Berceni"
-    property string selectedGate: "P014"
+    property string selectedLocation: "Fabrica"
+    property string selectedGate: "P001"
     property string selectedGateName: "Intrare Principală"
 
     function openRoot(component, properties) {

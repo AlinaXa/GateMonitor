@@ -15,9 +15,9 @@ Item {
         Text { text: "Selectează locația monitorizată"; color: App.Theme.secondaryText; font.pixelSize: 12 }
         Repeater {
             model: [
-                { name: "Depou Berceni", detail: "București · 4 porți", status: "BLUE" },
-                { name: "Depou Militari", detail: "București · 3 porți", status: "GREEN" },
-                { name: "Terminal Nord", detail: "Ploiești · 2 porți", status: "YELLOW" }
+                { name: "Fabrica", detail: "Platforma industrială · 6 porți", status: "BLUE" },
+                { name: "Depou Berceni", detail: "București · 5 porți", status: "GREEN" },
+                { name: "Depou Militari", detail: "București · 4 porți", status: "YELLOW" }
             ]
             delegate: Rectangle {
                 required property var modelData

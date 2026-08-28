@@ -4,7 +4,26 @@ import "../components"
 
 Item {
     id: root
-    property string locationName: "Depou Berceni"
+    property string locationName: "Fabrica"
+    readonly property var gates: locationName === "Fabrica" ? [
+        { idv: "P001", name: "Intrare Principală", state: "BLUE", label: "Activă", time: "01:37 · Admin 6" },
+        { idv: "P002", name: "Acces Marfă", state: "GREEN", label: "OK", time: "01:35 · Admin 4" },
+        { idv: "P003", name: "Hala Producție", state: "YELLOW", label: "Atenție", time: "01:31 · Admin 7" },
+        { idv: "P004", name: "Depozit Materii Prime", state: "GREEN", label: "OK", time: "01:29 · Admin 5" },
+        { idv: "P005", name: "Zonă Expediție", state: "RED", label: "Eroare", time: "01:25 · Admin 6" },
+        { idv: "P006", name: "Acces Tehnic", state: "BLUE", label: "Activă", time: "01:20 · Admin 4" }
+    ] : locationName === "Depou Berceni" ? [
+        { idv: "P014", name: "Intrare Principală", state: "BLUE", label: "Activă", time: "01:37 · Admin 6" },
+        { idv: "P015", name: "Ieșire Service", state: "GREEN", label: "OK", time: "01:32 · Admin 4" },
+        { idv: "P016", name: "Acces Tehnic", state: "YELLOW", label: "Atenție", time: "01:28 · Admin 7" },
+        { idv: "P017", name: "Parcare Vehicule", state: "GREEN", label: "OK", time: "01:22 · Admin 5" },
+        { idv: "P018", name: "Spălătorie", state: "BLUE", label: "Activă", time: "01:18 · Admin 6" }
+    ] : [
+        { idv: "P021", name: "Intrare Vest", state: "GREEN", label: "OK", time: "01:40 · Admin 5" },
+        { idv: "P022", name: "Intrare Est", state: "BLUE", label: "Activă", time: "01:34 · Admin 6" },
+        { idv: "P023", name: "Atelier", state: "YELLOW", label: "Atenție", time: "01:27 · Admin 7" },
+        { idv: "P024", name: "Ieșire Vehicule", state: "GREEN", label: "OK", time: "01:19 · Admin 4" }
+    ]
     signal backRequested()
     signal gateSelected(string gateId, string gateName)
     signal changeLocationRequested()
@@ -20,11 +39,7 @@ Item {
             Text { text: "Schimbă"; color: App.Theme.blue; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter; MouseArea { anchors.fill: parent; anchors.margins: -10; onClicked: root.changeLocationRequested() } }
         }
         Repeater {
-            model: [
-                { idv: "P014", name: "Intrare Principală", state: "BLUE", label: "Activă", time: "01:37 · Admin 6" },
-                { idv: "P015", name: "Ieșire Service", state: "GREEN", label: "OK", time: "01:32 · Admin 4" },
-                { idv: "P016", name: "Acces Tehnic", state: "YELLOW", label: "Atenție", time: "01:28 · Admin 7" }
-            ]
+            model: root.gates
             delegate: Rectangle {
                 required property var modelData
                 width: root.width - 32; height: 88; radius: 14; color: mouse.containsMouse ? App.Theme.cardHover : App.Theme.card; border.color: App.Theme.cardBorder
