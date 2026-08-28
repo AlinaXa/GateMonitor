@@ -52,7 +52,7 @@ ApplicationWindow {
             onMotorRequested: function(motorId) {
                 stackView.push(motorDetailComponent, { motorName: motorId, gateId: window.selectedGate, locationName: window.selectedLocation })
             }
-            onGateRequested: stackView.push(gateInfoComponent)
+            onGateRequested: stackView.push(allGatesComponent)
             onMenuRequested: window.openRoot(menuComponent)
             onNavigationRequested: function(destination) { window.handleNavigation(destination) }
         }
@@ -80,6 +80,19 @@ ApplicationWindow {
             }
             onChangeLocationRequested: window.openRoot(locationsComponent)
             onNavigationRequested: function(destination) { window.handleNavigation(destination) }
+        }
+    }
+
+    Component {
+        id: allGatesComponent
+        AllGates {
+            onBackRequested: stackView.pop()
+            onGateSelected: function(location, gateId, gateName) {
+                window.selectedLocation = location
+                window.selectedGate = gateId
+                window.selectedGateName = gateName
+                window.openRoot(gateDetailComponent)
+            }
         }
     }
 

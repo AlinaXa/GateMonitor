@@ -33,6 +33,7 @@ qt_add_qml_module(GateMonitorApp
         screens/GateDetail.qml
         screens/Locations.qml
         screens/Gates.qml
+        screens/AllGates.qml
         screens/MotorDetail.qml
         screens/GateInfo.qml
         screens/Alarms.qml
@@ -50,8 +51,8 @@ set_target_properties(GateMonitorApp PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
     QT_ANDROID_PACKAGE_NAME "ro.gatemonitor.app"
-    QT_ANDROID_VERSION_NAME "1.1.0"
-    QT_ANDROID_VERSION_CODE 3
+    QT_ANDROID_VERSION_NAME "1.2.0"
+    QT_ANDROID_VERSION_CODE 4
 )
 
 include(GNUInstallDirs)
