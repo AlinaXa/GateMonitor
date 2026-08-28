@@ -65,6 +65,13 @@ ApplicationWindow {
                 window.selectedLocation = location
                 window.openRoot(gatesComponent, { locationName: location })
             }
+            onGateSelected: function(location, gateId, gateName) {
+                window.selectedLocation = location
+                window.selectedGate = gateId
+                window.selectedGateName = gateName
+                window.openRoot(gateDetailComponent)
+            }
+            onLogSelected: function(index) { stackView.push(logDetailComponent, { logIndex: index }) }
             onNavigationRequested: function(destination) { window.handleNavigation(destination) }
         }
     }
