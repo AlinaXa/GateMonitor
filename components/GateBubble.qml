@@ -14,8 +14,8 @@ Item {
 
     signal clicked()
 
-    implicitWidth: 126
-    implicitHeight: 158
+    implicitWidth: 116
+    implicitHeight: 166
     scale: touch.pressed ? 1.03 : 1.0
 
     readonly property color healthColor: systemState === "warning" ? App.Theme.yellow
@@ -31,9 +31,9 @@ Item {
         id: ring
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
-        width: 92
-        height: 92
-        radius: 46
+        width: 104
+        height: 104
+        radius: 52
         color: Qt.rgba(root.healthColor.r, root.healthColor.g, root.healthColor.b, touch.pressed ? 0.16 : 0.08)
         border.width: touch.pressed ? 2.5 : 1.5
         border.color: root.healthColor
@@ -42,56 +42,64 @@ Item {
 
         Item {
             anchors.centerIn: parent
-            width: 64
-            height: 66
+            width: 74
+            height: 82
 
             // Carcasele laterale ale porții, văzută de sus.
-            Rectangle { x: 6; y: 12; width: 13; height: 42; radius: 4; color: "#C4D0DB"; opacity: 0.9 }
-            Rectangle { x: 45; y: 12; width: 13; height: 42; radius: 4; color: "#C4D0DB"; opacity: 0.9 }
+            Rectangle { x: 7; y: 7; width: 13; height: 57; radius: 4; color: "#D4DCE3"; border.color: "#71808F" }
+            Rectangle { x: 54; y: 7; width: 13; height: 57; radius: 4; color: "#D4DCE3"; border.color: "#71808F" }
 
             // Perechile de indicatoare: sus și jos au întotdeauna aceeași culoare.
-            Rectangle { x: 8; y: 3; width: 7; height: 7; radius: 4; color: root.topLight }
-            Rectangle { x: 49; y: 3; width: 7; height: 7; radius: 4; color: root.topLight }
-            Rectangle { x: 8; y: 56; width: 7; height: 7; radius: 4; color: root.bottomLight }
-            Rectangle { x: 49; y: 56; width: 7; height: 7; radius: 4; color: root.bottomLight }
+            Rectangle { x: 9; y: 10; width: 9; height: 9; radius: 5; color: root.topLight; border.color: "#24313D" }
+            Rectangle { x: 56; y: 10; width: 9; height: 9; radius: 5; color: root.topLight; border.color: "#24313D" }
+            Rectangle { x: 9; y: 51; width: 9; height: 9; radius: 5; color: root.bottomLight; border.color: "#24313D" }
+            Rectangle { x: 56; y: 51; width: 9; height: 9; radius: 5; color: root.bottomLight; border.color: "#24313D" }
 
             // Brațele se întâlnesc la mijloc și se retrag orizontal când poarta se deschide.
             Rectangle {
-                x: 17; y: 31; width: 15; height: 3; radius: 2; color: App.Theme.primaryText
-                transform: Rotation { origin.x: 0; origin.y: 1.5; angle: root.gateOpen ? -62 : 0; Behavior on angle { NumberAnimation { duration: 180; easing.type: Easing.InOutQuad } } }
+                x: 20; y: 34; width: 17; height: 4; radius: 2; color: App.Theme.primaryText
+                transform: Rotation { origin.x: 0; origin.y: 2; angle: root.gateOpen ? 38 : 0; Behavior on angle { NumberAnimation { duration: 180; easing.type: Easing.InOutQuad } } }
             }
             Rectangle {
-                x: 32; y: 31; width: 15; height: 3; radius: 2; color: App.Theme.primaryText
-                transform: Rotation { origin.x: 15; origin.y: 1.5; angle: root.gateOpen ? 62 : 0; Behavior on angle { NumberAnimation { duration: 180; easing.type: Easing.InOutQuad } } }
+                x: 37; y: 34; width: 17; height: 4; radius: 2; color: App.Theme.primaryText
+                transform: Rotation { origin.x: 17; origin.y: 2; angle: root.gateOpen ? -38 : 0; Behavior on angle { NumberAnimation { duration: 180; easing.type: Easing.InOutQuad } } }
             }
 
             Text {
-                anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: -1
                 text: root.accessDirection === "bottomToTop" ? "↑" : root.accessDirection === "topToBottom" ? "↓" : "×"
                 color: root.accessDirection === "blocked" ? App.Theme.red : App.Theme.green
-                font.pixelSize: 12
+                font.pixelSize: 18
                 font.weight: Font.Bold
             }
 
             Rectangle {
                 visible: root.validatorActive
-                x: 55; y: 24; width: 8; height: 17; radius: 2
-                color: App.Theme.card
-                border.color: App.Theme.blue
-                Rectangle { anchors.horizontalCenter: parent.horizontalCenter; y: 4; width: 4; height: 2; color: App.Theme.blue }
+                x: 58; y: 27; width: 11; height: 20; radius: 3
+                color: "#102033"
+                border.width: 2
+                border.color: root.gateOpen ? App.Theme.green : App.Theme.red
+                Text { anchors.centerIn: parent; text: "◇"; color: parent.border.color; font.pixelSize: 8 }
             }
         }
     }
 
     Column {
         anchors.top: ring.bottom
-        anchors.topMargin: 7
+        anchors.topMargin: 8
         width: parent.width
         spacing: 2
 
-        Text { width: parent.width; text: root.gateId; color: App.Theme.primaryText; font.pixelSize: 12; font.weight: Font.Bold; horizontalAlignment: Text.AlignHCenter }
-        Text { width: parent.width; text: root.location; color: App.Theme.secondaryText; font.pixelSize: 9; horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight }
-        Text { width: parent.width; text: root.stateText; color: root.healthColor; font.pixelSize: 9; horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight }
+        Text { width: parent.width; text: root.gateId; color: App.Theme.primaryText; font.pixelSize: 14; font.weight: Font.Bold; horizontalAlignment: Text.AlignHCenter }
+        Text { width: parent.width; text: root.location; color: App.Theme.secondaryText; font.pixelSize: 10; horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight }
+        Row {
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 5
+            Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 7; height: 7; radius: 4; color: root.healthColor }
+            Text { text: root.stateText.toUpperCase(); color: root.healthColor; font.pixelSize: 10; font.weight: Font.DemiBold }
+        }
     }
 
     MouseArea {

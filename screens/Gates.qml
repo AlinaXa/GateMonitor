@@ -48,14 +48,15 @@ Item {
         anchors.leftMargin: 12; anchors.rightMargin: 12
         clip: true
         topMargin: 12; bottomMargin: 16
-        readonly property int columns: width >= 560 ? 3 : 2
+        readonly property int columns: width >= 350 ? 3 : 2
         cellWidth: width / columns
-        cellHeight: 174
+        cellHeight: 180
         model: root.gates
 
         delegate: Item {
             id: gateDelegate
             required property var modelData
+            required property int index
             width: GridView.view.cellWidth
             height: GridView.view.cellHeight
 
@@ -64,6 +65,9 @@ Item {
                 gateId: gateDelegate.modelData.idv
                 location: root.locationName
                 stateText: gateDelegate.modelData.label
+                gateOpen: gateDelegate.modelData.state === "GREEN" || gateDelegate.modelData.state === "BLUE"
+                accessDirection: gateDelegate.modelData.state === "RED" || gateDelegate.modelData.state === "YELLOW" ? "blocked" : (gateDelegate.index % 2 === 0 ? "bottomToTop" : "topToBottom")
+                validatorActive: gateDelegate.modelData.state !== "YELLOW"
                 systemState: gateDelegate.modelData.state === "YELLOW" ? "warning" : gateDelegate.modelData.state === "RED" ? "error" : "normal"
                 onClicked: root.gateSelected(gateDelegate.modelData.idv, gateDelegate.modelData.name)
             }
