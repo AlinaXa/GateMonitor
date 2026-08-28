@@ -28,6 +28,7 @@ qt_add_qml_module(GateMonitorApp
         Theme.qml
         AppState.qml
         components/MotorBubble.qml
+        components/GateBubble.qml
         components/StatusDot.qml
         components/BottomNavigation.qml
         screens/GateDetail.qml
@@ -51,8 +52,8 @@ set_target_properties(GateMonitorApp PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
     QT_ANDROID_PACKAGE_NAME "ro.gatemonitor.app"
-    QT_ANDROID_VERSION_NAME "1.2.1"
-    QT_ANDROID_VERSION_CODE 5
+    QT_ANDROID_VERSION_NAME "1.2.2"
+    QT_ANDROID_VERSION_CODE 6
 )
 
 include(GNUInstallDirs)

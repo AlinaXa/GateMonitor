@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import ".." as App
 import "../components"
@@ -29,24 +31,41 @@ Item {
     signal changeLocationRequested()
     signal navigationRequested(string destination)
     Rectangle { anchors.fill: parent; color: App.Theme.background }
-    Column {
-        anchors.left: parent.left; anchors.right: parent.right; anchors.top: parent.top; anchors.bottom: nav.top
-        anchors.margins: 16; anchors.topMargin: 38; spacing: 12
-        Row {
-            width: parent.width; height: 44; spacing: 10
-            Text { text: "‹"; color: App.Theme.primaryText; font.pixelSize: 28; width: 28; MouseArea { anchors.fill: parent; onClicked: root.backRequested() } }
-            Column { width: parent.width - 92; Text { text: "Porți"; color: App.Theme.primaryText; font.pixelSize: 21; font.weight: Font.Bold } Text { text: root.locationName; color: App.Theme.secondaryText; font.pixelSize: 11 } }
-            Text { text: "Schimbă"; color: App.Theme.blue; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter; MouseArea { anchors.fill: parent; anchors.margins: -10; onClicked: root.changeLocationRequested() } }
-        }
-        Repeater {
-            model: root.gates
-            delegate: Rectangle {
-                required property var modelData
-                width: root.width - 32; height: 88; radius: 14; color: mouse.containsMouse ? App.Theme.cardHover : App.Theme.card; border.color: App.Theme.cardBorder
-                Rectangle { x: 14; anchors.verticalCenter: parent.verticalCenter; width: 44; height: 44; radius: 22; color: App.Theme.statusBackground(modelData.state, false); border.color: App.Theme.statusColor(modelData.state); Text { anchors.centerIn: parent; text: modelData.idv; color: App.Theme.primaryText; font.pixelSize: 12; font.weight: Font.Bold } }
-                Column { x: 72; anchors.verticalCenter: parent.verticalCenter; width: parent.width - 136; spacing: 4; Text { width: parent.width; text: modelData.name; color: App.Theme.primaryText; font.pixelSize: 14; font.weight: Font.DemiBold; elide: Text.ElideRight } Text { text: modelData.label; color: App.Theme.statusColor(modelData.state); font.pixelSize: 11 } Text { text: modelData.time; color: App.Theme.secondaryText; font.pixelSize: 10 } }
-                Text { anchors.right: parent.right; anchors.rightMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: "›"; color: App.Theme.blue; font.pixelSize: 25 }
-                MouseArea { id: mouse; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: root.gateSelected(modelData.idv, modelData.name) }
+    Row {
+        id: header
+        anchors.left: parent.left; anchors.right: parent.right; anchors.top: parent.top
+        anchors.leftMargin: 16; anchors.rightMargin: 16; anchors.topMargin: 38
+        height: 50; spacing: 10
+        Text { text: "‹"; color: App.Theme.primaryText; font.pixelSize: 28; width: 28; MouseArea { anchors.fill: parent; onClicked: root.backRequested() } }
+        Column { width: parent.width - 92; Text { text: "Porți"; color: App.Theme.primaryText; font.pixelSize: 21; font.weight: Font.Bold } Text { text: root.locationName; color: App.Theme.secondaryText; font.pixelSize: 11 } }
+        Text { text: "Schimbă"; color: App.Theme.blue; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter; MouseArea { anchors.fill: parent; anchors.margins: -10; onClicked: root.changeLocationRequested() } }
+    }
+
+    GridView {
+        id: gateGrid
+        anchors.left: parent.left; anchors.right: parent.right
+        anchors.top: header.bottom; anchors.bottom: nav.top
+        anchors.leftMargin: 12; anchors.rightMargin: 12
+        clip: true
+        topMargin: 12; bottomMargin: 16
+        readonly property int columns: width >= 560 ? 3 : 2
+        cellWidth: width / columns
+        cellHeight: 174
+        model: root.gates
+
+        delegate: Item {
+            id: gateDelegate
+            required property var modelData
+            width: GridView.view.cellWidth
+            height: GridView.view.cellHeight
+
+            GateBubble {
+                anchors.horizontalCenter: parent.horizontalCenter
+                gateId: gateDelegate.modelData.idv
+                location: root.locationName
+                stateText: gateDelegate.modelData.label
+                systemState: gateDelegate.modelData.state === "YELLOW" ? "warning" : gateDelegate.modelData.state === "RED" ? "error" : "normal"
+                onClicked: root.gateSelected(gateDelegate.modelData.idv, gateDelegate.modelData.name)
             }
         }
     }
