@@ -87,6 +87,7 @@ Item {
                     gateOpen: gateCell.modelData.state === "GREEN" || gateCell.modelData.state === "BLUE"
                     accessDirection: gateCell.modelData.state === "RED" || gateCell.modelData.state === "YELLOW" ? "blocked"
                                      : (gateCell.index % 2 === 0 ? "bottomToTop" : "topToBottom")
+                    floatPhase: gateCell.index % 5
                     validatorActive: gateCell.modelData.state !== "YELLOW"
                     systemState: gateCell.modelData.state === "GREEN" ? "open"
                                  : gateCell.modelData.state === "RED" ? "closed"

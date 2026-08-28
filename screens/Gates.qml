@@ -69,6 +69,7 @@ Item {
                 accessDirection: gateDelegate.modelData.state === "RED" || gateDelegate.modelData.state === "YELLOW" ? "blocked" : (gateDelegate.index % 2 === 0 ? "bottomToTop" : "topToBottom")
                 validatorActive: gateDelegate.modelData.state !== "YELLOW"
                 systemState: gateDelegate.modelData.state === "YELLOW" ? "warning" : gateDelegate.modelData.state === "RED" ? "error" : "normal"
+                floatPhase: gateDelegate.index % 5
                 onClicked: root.gateSelected(gateDelegate.modelData.idv, gateDelegate.modelData.name)
             }
         }

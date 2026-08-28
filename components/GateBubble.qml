@@ -12,12 +12,23 @@ Item {
     property bool validatorActive: false
     property string systemState: "normal"
     property bool quickVisible: false
+    property int floatPhase: 0
 
     signal clicked()
 
     implicitWidth: 116
     implicitHeight: 166
     scale: touch.pressed ? 1.03 : 1.0
+    transform: Translate { id: floating; y: 0 }
+
+    SequentialAnimation {
+        running: root.visible && !touch.pressed
+        loops: Animation.Infinite
+        PauseAnimation { duration: root.floatPhase * 90 }
+        NumberAnimation { target: floating; property: "y"; from: 0; to: -4; duration: 850 + root.floatPhase * 35; easing.type: Easing.InOutSine }
+        NumberAnimation { target: floating; property: "y"; from: -4; to: 3; duration: 1250 + root.floatPhase * 25; easing.type: Easing.InOutSine }
+        NumberAnimation { target: floating; property: "y"; from: 3; to: 0; duration: 800; easing.type: Easing.InOutSine }
+    }
 
     readonly property color healthColor: systemState === "open" ? App.Theme.green
                                                 : systemState === "closed" ? App.Theme.red
