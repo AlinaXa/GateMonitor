@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="512" cy="512" r="350" stroke="#3478F6" stroke-width="32"/>
+
+    <!-- Două carcase identice, perfect paralele, văzute de sus. -->
+    <rect x="250" y="245" width="128" height="500" rx="42" fill="#E5EBF0" stroke="#768697" stroke-width="14"/>
+    <rect x="646" y="245" width="128" height="500" rx="42" fill="#E5EBF0" stroke="#768697" stroke-width="14"/>
+    <rect x="275" y="270" width="78" height="450" rx="25" fill="#132236"/>
+    <rect x="671" y="270" width="78" height="450" rx="25" fill="#132236"/>
+
+    <!-- Perechea de sus: aceeași poziție în oglindă, aceeași culoare. -->
+    <circle cx="314" cy="326" r="27" fill="#2CCB70" stroke="#07121F" stroke-width="12"/>
+    <circle cx="710" cy="326" r="27" fill="#2CCB70" stroke="#07121F" stroke-width="12"/>
+
+    <!-- Perechea de jos: aceeași poziție în oglindă, aceeași culoare. -->
+    <circle cx="314" cy="664" r="27" fill="#EF4444" stroke="#07121F" stroke-width="12"/>
+    <circle cx="710" cy="664" r="27" fill="#EF4444" stroke="#07121F" stroke-width="12"/>
+
+    <!-- Brațe deschise, simetrice față de culoarul central. -->
+    <path d="M378 470 L485 558" stroke="#F4F7FB" stroke-width="34"/>
+    <path d="M646 470 L539 558" stroke="#F4F7FB" stroke-width="34"/>
+
+    <!-- Validator discret pe carcasa dreaptă. -->
+    <rect x="682" y="445" width="56" height="96" rx="14" fill="#07121F" stroke="#2CCB70" stroke-width="12"/>
+    <path d="M697 484 L710 471 L723 484 L710 497 Z" stroke="#2CCB70" stroke-width="7"/>
+
+    <!-- Direcția permisă. -->
+    <path d="M512 806 V738 M512 738 L474 776 M512 738 L550 776" stroke="#2CCB70" stroke-width="28"/>
+  </g>
+</svg>
