@@ -53,7 +53,7 @@ ApplicationWindow {
                 stackView.push(motorDetailComponent, { motorName: motorId, gateId: window.selectedGate, locationName: window.selectedLocation })
             }
             onGateRequested: stackView.push(allGatesComponent)
-            onMenuRequested: window.openRoot(menuComponent)
+            onMenuRequested: stackView.push(gateInfoComponent)
             onNavigationRequested: function(destination) { window.handleNavigation(destination) }
         }
     }
